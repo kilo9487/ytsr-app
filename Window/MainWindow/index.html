@@ -43,7 +43,7 @@
 
     <style>
         #mousecurs {
-            z-index: 100;
+            z-index: 200;
             position: absolute;
             transform: translate(-50%, -50%);
             top: 50%;
@@ -537,9 +537,9 @@
                 </style>
             </main>
         </div>
-        <div class="bgtxt">
-            <div class="txt">NONE</div>
+        <div class="bg-gradient">
         </div>
+        <div class="bg-txt">NONE</div>
         <div id="bg">
             <div class="bg back-image"></div>
         </div>
@@ -560,7 +560,7 @@
             }
 
             #box>.box {
-                z-index: 2;
+                z-index: 3;
                 width: 100%;
                 height: 100%;
                 top: 50%;
@@ -569,7 +569,7 @@
                 transform: translate(-50%, -50%);
             }
 
-            #box>.bgtxt {
+            #box>.bg-gradient {
                 z-index: 1;
                 top: 0%;
                 left: 0%;
@@ -583,11 +583,17 @@
                 background: linear-gradient(90deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 65%);
             }
 
-            #box>.bgtxt>.txt {
+            #box>.bg-txt {
+                z-index: 2;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                position: absolute;
                 text-align: center;
-                font-size: 200px;
+                font-size: 100px;
                 letter-spacing: 50px;
                 opacity: .2;
+                width: 1000%;
             }
 
             #title {

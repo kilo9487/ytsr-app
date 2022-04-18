@@ -2,15 +2,15 @@ const djsmusic = require("@kyometori/djsmusic")
 const { ipcRenderer } = require("electron");
 
 window.addEventListener("DOMContentLoaded", async () => {
-    document.querySelector("#keyword").addEventListener("change",()=>{
-        ipcRenderer.send("main-keyword",document.querySelector("#keyword").value)
+    document.querySelector("#keyword").addEventListener("change", () => {
+        ipcRenderer.send("main-keyword", document.querySelector("#keyword").value)
     })
-
+    document.on
     let playerOnOffStat = 0;
     let ytscingStat = 0
 
     {
-        
+
         function vido(options) {
             const mainMainEl = document.querySelector("#main>.main");
             const mainMainvidoEl = mainMainEl.querySelector(".vido");
@@ -45,7 +45,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
             mainMainEl.querySelector(".chanel>.avatar").style.backgroundImage = `url(${options.chnel.avat})`
             mainMainEl.querySelector(".chanel>.name").setAttribute("href", options.chnel.chanUrl)
-            document.querySelector("#box>.bgtxt>.txt ").innerHTML = options.chnel.name
+            document.querySelector("#box>.bg-txt ").innerHTML = options.chnel.name
             mainMainEl.querySelector(".chanel>.name").innerHTML = options.chnel.name
         }
 
@@ -169,8 +169,8 @@ window.addEventListener("DOMContentLoaded", async () => {
             document.body.style.pointerEvents = "none"
             document.querySelector("#box").style.transform = "translate(-50%, -100%) scale(.7)"
             document.querySelector("#box").style.opacity = "0"
-            document.querySelector("#mousecurs").style.transform="translate(-50%, -50%) scale(5)"
-            document.querySelector("#mousecurs").style.opacity="0"
+            document.querySelector("#mousecurs").style.transform = "translate(-50%, -50%) scale(5)"
+            document.querySelector("#mousecurs").style.opacity = "0"
             setTimeout(() => ipcRenderer.send("main-BrowserWindow", "close"), 1.5e3)
         })
 
@@ -280,8 +280,8 @@ window.addEventListener("DOMContentLoaded", async () => {
             mouseMouseEle.backgroundColor = "#0000"
             mouseMouseEle.backdropFilter = "blur(0)"
 
-            mouseFocesEle.transform="translate(-50%, -50%) scale(.3)"
-            mouseFocesEle.opacity="1"
+            mouseFocesEle.transform = "translate(-50%, -50%) scale(.3)"
+            mouseFocesEle.opacity = "1"
         })
         document.addEventListener("mouseup", function (e) {
             mouseMouseEle.width = ""
@@ -290,11 +290,13 @@ window.addEventListener("DOMContentLoaded", async () => {
             mouseMouseEle.backgroundColor = ""
             mouseMouseEle.backdropFilter = ""
 
-            mouseFocesEle.transform=""
-            mouseFocesEle.opacity=""
+            mouseFocesEle.transform = ""
+            mouseFocesEle.opacity = ""
         })
     }
     {
+        // 來源 ： https://codepen.io/spagettiguru/pen/PoqbOKm
+
         const bg = document.querySelector('#bg');
 
         const viewportWidth = document.documentElement.clientWidth;
@@ -308,12 +310,40 @@ window.addEventListener("DOMContentLoaded", async () => {
             {
                 bg.style.top = "0"
                 bg.style.left = "0"
-                const maxXOffset = 30;
-                const maxYOffset = 30;
+                const maxXOffset = -30;
+                const maxYOffset = -30;
                 bg.style.transform = `translate(
             ${viewportWidth / 2 + (hDistanceFromCenter / (viewportWidth / 2) * maxXOffset) - bgWidth / 2}px,
             ${viewportHeight / 2 + (vDistanceFromCenter / (viewportHeight / 2) * maxYOffset) - bgHeight / 2}px)`;
             }
         });
+    }
+    {
+        // 來源 ： https://codepen.io/ryanmorr/pen/JdOvYR
+        
+        var menu = document.querySelector('#ctx-menu');
+
+        function showMenu(x, y) {
+            menu.style.left = x + 'px';
+            menu.style.top = y + 'px';
+            menu.classList.add('menu-show');
+        }
+
+        function hideMenu() {
+            menu.classList.remove('menu-show');
+        }
+
+        function onContextMenu(e) {
+            e.preventDefault();
+            showMenu(e.pageX, e.pageY);
+            document.addEventListener('mousedown', onMouseDown, false);
+        }
+
+        function onMouseDown(e) {
+            hideMenu();
+            document.removeEventListener('mousedown', onMouseDown);
+        }
+
+        document.addEventListener('contextmenu', onContextMenu, false);
     }
 })

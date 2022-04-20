@@ -198,7 +198,7 @@ window.addEventListener("DOMContentLoaded", async () => {
 
         document.addEventListener("keydown", e => {
             if (!ytscingStat) {
-                if (e.ctrlKey && e.code == "KeyP" && !playerOnOffStat) {
+                if (e.altKey && e.code == "KeyP" && !playerOnOffStat) {
                     playerOnOffFunc();
                 } else if (e.code == "Escape" && playerOnOffStat) {
                     playerOnOffFunc();

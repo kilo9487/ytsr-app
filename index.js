@@ -56,6 +56,9 @@ app.whenReady().then(() => {
         hiddenMenu.on("click", () => {
             MainWindow.show()
         })
+        hiddenMenu.on("double-click", () => {
+            MainWindow.hide()
+        })
         MainWindow.on("close", () => {
             app.quit()
         })

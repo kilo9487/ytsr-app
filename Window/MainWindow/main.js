@@ -7,10 +7,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     })
     document.on
     let playerOnOffStat = 0;
+    let helpOnOffStat = 0;
+    let playerOnOffFunc
     let ytscingStat = 0
 
     {
-
         function vido(options) {
             const mainMainEl = document.querySelector("#main>.main");
             const mainMainvidoEl = mainMainEl.querySelector(".vido");
@@ -95,14 +96,15 @@ window.addEventListener("DOMContentLoaded", async () => {
         }
 
         async function ytsc() {
-            console.log("WAIT....");
             ytscing.ing();
+            if(playerOnOffStat){
+                playerOnOffFunc()
+            }
             ipcRenderer.send("main-HiddenIconTip", "查詢中...");
             const ytKeyWord = document.querySelector("#keyword").value
             if (ytKeyWord) {
                 try {
-                    const data = await djsmusic.YoutubeUtils.searchFirstVideo(ytKeyWord)
-
+                    const data = await djsmusic.YoutubeUtils.searchFirstVideo(ytKeyWord)    
                     await data.fetch()
                     await data.channel.fetch()
                     vido({
@@ -116,7 +118,6 @@ window.addEventListener("DOMContentLoaded", async () => {
                 vido()
                 ipcRenderer.send("main-HiddenIconTip", "Ouo");
             }
-            console.log("OK OUO");
             ytscing.done();
         }
 
@@ -178,8 +179,7 @@ window.addEventListener("DOMContentLoaded", async () => {
     {
         const ele = document.querySelector("#main>.player>.box").style;
         const ele2 = document.querySelector("#main>.player").style;
-
-        const eleOnOff = function () {
+        playerOnOffFunc = function () {
             if (!playerOnOffStat) {
                 ele.transform = "translate(-50%, -50%) scale(1)";
                 ele.pointerEvents = "auto";
@@ -198,71 +198,15 @@ window.addEventListener("DOMContentLoaded", async () => {
 
         document.addEventListener("keydown", e => {
             if (!ytscingStat) {
-                if (e.ctrlKey && e.altKey && e.code == "KeyP" && !playerOnOffStat || e.metaKey && e.altKey && e.code == "KeyP" && !playerOnOffStat) {
-                    eleOnOff();
+                if (e.ctrlKey && e.code == "KeyP" && !playerOnOffStat) {
+                    playerOnOffFunc();
                 } else if (e.code == "Escape" && playerOnOffStat) {
-                    eleOnOff();
+                    playerOnOffFunc();
                 }
             }
         })
         document.querySelector("#main>.player>.box>.back").addEventListener("click", () => {
-            eleOnOff()
-        })
-
-    }
-    {
-        const ele = document.querySelector("#main>.key>div>div")
-
-        const set = {
-            shodow: "0 0 20px #fff",
-            border: "4px solid #fff",
-            trsfr: "scale(1)",
-        }
-        document.addEventListener("keydown", e => {
-            if (!ytscingStat) {
-                if (e.ctrlKey) {
-                    const ele2 = ele.querySelector(".ctr").style
-                    ele2.textShadow = set.shodow
-                    ele2.border = set.border
-                    ele2.transform = set.trsfr
-                    ele.style.transform = "translate(0,0)"
-                }
-                if (e.altKey) {
-                    const ele2 = ele.querySelector(".alt").style
-                    ele2.textShadow = set.shodow
-                    ele2.border = set.border
-                    ele2.transform = set.trsfr
-                }
-                if (e.code == "KeyP") {
-                    const ele2 = ele.querySelector(".keyP").style
-                    ele2.textShadow = set.shodow
-                    ele2.border = set.border
-                    ele2.transform = set.trsfr
-                }
-            }
-        })
-        document.addEventListener("keyup", e => {
-            if (!ytscingStat) {
-                if (e.code == "ControlLeft" || e.code == "ControlRight") {
-                    const ele2 = ele.querySelector(".ctr").style
-                    ele2.textShadow = ""
-                    ele2.border = ""
-                    ele2.transform = ""
-                    ele.style.transform = ""
-                }
-                if (e.code == "AltLeft" || e.code == "AltRight") {
-                    const ele2 = ele.querySelector(".alt").style
-                    ele2.textShadow = ""
-                    ele2.border = ""
-                    ele2.transform = ""
-                }
-                if (e.code == "KeyP") {
-                    const ele2 = ele.querySelector(".keyP").style
-                    ele2.textShadow = ""
-                    ele2.border = ""
-                    ele2.transform = ""
-                }
-            }
+            playerOnOffFunc()
         })
     }
     {
@@ -320,7 +264,8 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
     {
         // 來源 ： https://codepen.io/ryanmorr/pen/JdOvYR
-        
+        // 開發中
+
         var menu = document.querySelector('#ctx-menu');
 
         function showMenu(x, y) {

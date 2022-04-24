@@ -17,6 +17,7 @@ app.whenReady().then(() => {
             autoHideMenuBar: true,
             frame: false,
             transparent: true,
+            fullscreenable: false,
             icon: "icon.png",
 
             webPreferences: {
@@ -73,6 +74,7 @@ app.whenReady().then(() => {
             skipTaskbar: true,
             show: false,
             resizable: false,
+            fullscreenable: false,
 
             webPreferences: {
                 preload: path.join(__dirname, 'Window/SearchWindow/main.js')
@@ -121,3 +123,12 @@ ipcMain.on("ytsr-keyword", function (_event, args) {
     MainWindow.webContents.send("main-yt-keyword", args);
     SearchWindow.hide();
 });
+
+ipcMain.on("ytsr-keyword", function (_event, args) {
+    MainWindow.webContents.send("main-yt-keyword", args);
+    SearchWindow.hide();
+});
+
+ipcMain.on("ytsring", function (_event, args) {
+    SearchWindow.webContents.send("ytsring", args);
+})

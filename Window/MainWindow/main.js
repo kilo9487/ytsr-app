@@ -35,6 +35,7 @@ window.addEventListener("DOMContentLoaded", async () => {
                 document.querySelector("#main>.main>.chanel>.name").style.margin = "auto 0px"
                 TheAnimectinsFunctions.closeAsk.off()
                 OnOffStatus.ytsring++
+                ipcRenderer.send("ytsring", OnOffStatus.ytsring)
             },
             done: function () {
                 document.querySelectorAll("#main>.main>.vido>*").forEach(ele => {
@@ -56,6 +57,7 @@ window.addEventListener("DOMContentLoaded", async () => {
                 document.querySelector("#main>.main>.chanel>.name").style.margin = ""
                 document.querySelector("#main>.ytsring>div>div").style.transform = ""
                 OnOffStatus.ytsring--
+                ipcRenderer.send("ytsring", OnOffStatus.ytsring)
             },
         },
         player: {
@@ -82,7 +84,7 @@ window.addEventListener("DOMContentLoaded", async () => {
             },
         },
         closeAsk: {
-            lst: ["#close-bg", "#box", "#close-ask", "#close-ask>.a", "#close-ask>.q"],
+            lst: ["#close-bg", "#close-bg>.bg", "#box", "#close-ask", "#close-ask>.a", "#close-ask>.q"],
             on: function () { this.lst.forEach(ele => document.querySelector(ele).classList.add("close")) },
             off: function () { this.lst.forEach(ele => document.querySelector(ele).classList.remove("close")) },
         },

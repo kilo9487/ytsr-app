@@ -47,6 +47,44 @@
             }
         </style>
     </div>
+
+    <div id="ytsring" class="done">
+        <div>查詢中 搜尋功能暫時禁用</div>
+    </div>
+    <style>
+        #ytsring {
+            z-index: 10;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: calc(100% - 20px);
+            height: calc(100% - 20px);
+            border-radius: 8px;
+            background: #0005;
+            transform: translate(-50%, -50%);
+            transition: .2s ease-in-out;
+        }
+
+        #ytsring.done {
+            transform: translate(-50%, -50%) scale(0);
+        }
+
+        #ytsring>div {
+            top: 50%;
+            left: 50%;
+            position: absolute;
+            transform: translate(-50%, -50%);
+            color: #fff;
+            font-weight: bold;
+            letter-spacing: 0px;
+            transition: .2s cubic-bezier(0, .5, 0, 1);
+        }
+
+        #ytsring:hover>div {
+            letter-spacing: 10px;
+            transition: .5s cubic-bezier(0, .5, 0, 1);
+        }
+    </style>
 </body>
 
 </html>

@@ -9,10 +9,11 @@ window.addEventListener("DOMContentLoaded", async () => {
     let OnOffStatus = {
         player: 0,
         help: 0,
-        ytsring: 0
+        ytsring: 0,
+        keywordfoces: 0
     }
 
-    const TheFunctions = {
+    const TheAnimectinsFunctions = {
         ytscing: {
             ing: function () {
                 document.querySelectorAll("#main>.main>.vido>*").forEach(ele => {
@@ -32,6 +33,7 @@ window.addEventListener("DOMContentLoaded", async () => {
                 document.querySelector("#main>.ytsring>div>div").style.transform = "translate(0, 0) scale(1)"
                 document.querySelector("#main>.main>.chanel>.avatar").style.transform = "scale(.8)"
                 document.querySelector("#main>.main>.chanel>.name").style.margin = "auto 0px"
+                TheAnimectinsFunctions.closeAsk.off()
                 OnOffStatus.ytsring++
             },
             done: function () {
@@ -57,17 +59,18 @@ window.addEventListener("DOMContentLoaded", async () => {
             },
         },
         player: {
-            eles:{
-                ele1:document.querySelector("#main>.player>.box").style,
-                ele2:document.querySelector("#main>.player").style,
+            eles: {
+                ele1: document.querySelector("#main>.player>.box").style,
+                ele2: document.querySelector("#main>.player").style,
             },
-            player:function() {
+            player: function () {
                 if (!OnOffStatus.player) {
                     this.eles.ele1.transform = "translate(-50%, -50%) scale(1)";
                     this.eles.ele1.pointerEvents = "auto";
                     this.eles.ele2.pointerEvents = "auto";
                     this.eles.ele1.opacity = "1";
                     document.querySelector("#main>.ytsring>div>div").style.transform = ""
+                    TheAnimectinsFunctions.closeAsk.off()
                     OnOffStatus.player++;
                 } else {
                     this.eles.ele1.transform = "";
@@ -84,79 +87,96 @@ window.addEventListener("DOMContentLoaded", async () => {
             off: function () { this.lst.forEach(ele => document.querySelector(ele).classList.remove("close")) },
         },
     }
+    const TheMainFunctions = {
+        ytSc: {
+            vido: function (options) {
+                const mainMainEl = document.querySelector("#main>.main");
+                const mainMainvidoEl = mainMainEl.querySelector(".vido");
+                const mainPlayerEl = document.querySelector("#main>.player");
+                if (!options) {
+                    options = {
+                        vedo: {
+                            thumb: "default-image/thumbnail.png",
+                            title: "NONE",
+                            vidoUrl: "https://www.youtube.com/embed/",
+                            update: "2009-04-06",
+                            viewcon: "9487",
+                        },
+                        chnel: {
+                            avat: "default-image/avatar.png",
+                            chanUrl: "/",
+                            name: "NONE",
+                        },
+
+                    }
+
+                }
+                mainMainvidoEl.querySelector(".thumbnail").style.backgroundImage = `url(${options.vedo.thumb})`
+                document.querySelector("#bg>.bg").style.backgroundImage = `url(${options.vedo.thumb})`
+                document.querySelector("#close-bg>.bg").style.backgroundImage = `url(${options.vedo.thumb})`
+                mainMainvidoEl.querySelector(".title").innerHTML = options.vedo.title
+                mainPlayerEl.querySelector(".box>.title>.title").innerHTML = options.vedo.title
+                mainMainvidoEl.querySelector(".title").setAttribute("href", options.vedo.vidoUrl)
+                mainPlayerEl.querySelector(".box>.vido>.vido").setAttribute("src", "https://www.youtube.com/embed/" + options.vedo.vidoUrl.slice("https://www.youtube.com/watch?v=".length).trim())
+                mainMainvidoEl.querySelector(".uploadDate").innerHTML = options.vedo.update
+                mainMainvidoEl.querySelector(".viewCount").innerHTML = options.vedo.viewcon
+
+                mainMainEl.querySelector(".chanel>.avatar").style.backgroundImage = `url(${options.chnel.avat})`
+                mainMainEl.querySelector(".chanel>.name").setAttribute("href", options.chnel.chanUrl)
+                document.querySelector("#box>.bg-txt ").innerHTML = options.chnel.name
+                mainMainEl.querySelector(".chanel>.name").innerHTML = options.chnel.name
+            },
+            ytsc: async function () {
+                TheAnimectinsFunctions.ytscing.ing();
+                ipcRenderer.send("main-HiddenIconTip", "查詢中...");
+                const ytKeyWord = document.querySelector("#keyword").value
+                if (ytKeyWord) {
+                    try {
+                        const data = await djsmusic.YoutubeUtils.searchFirstVideo(ytKeyWord)
+                        await data.fetch()
+                        await data.channel.fetch()
+                        this.vido({
+                            vedo: { thumb: data.thumbnailUrl, title: data.title, vidoUrl: data.url, update: data.uploadDate, viewcon: data.viewCount },
+                            chnel: { name: data.channel.name, chanUrl: data.channel.url, avat: data.channel.avatarUrl }
+                        })
+                        ipcRenderer.send("main-HiddenIconTip", `${data.title} / ${data.channel.name}`);
+                    } catch (err) {
+                    }
+                } else {
+                    this.vido()
+                    ipcRenderer.send("main-HiddenIconTip", "Ouo");
+                }
+                TheAnimectinsFunctions.ytscing.done()
+            }
+        }
+    }
 
 
+    document.addEventListener("keydown", e => {
+        if (!OnOffStatus.ytsring) {
+            if (e.altKey && e.code == "KeyP" && !OnOffStatus.player) {
+                TheAnimectinsFunctions.player.player()
+            } else if (e.code == "Escape" && OnOffStatus.player) {
+                TheAnimectinsFunctions.player.player()
+            };
+        };
+    });
+    document.addEventListener("keypress", e => {
+        if (OnOffStatus.keywordfoces && e.code === "Enter" || OnOffStatus.keywordfoces && e.code === "NumpadEnter") {
+            TheMainFunctions.ytSc.ytsc();
+        };
+    });
 
     {
-        function vido(options) {
-            const mainMainEl = document.querySelector("#main>.main");
-            const mainMainvidoEl = mainMainEl.querySelector(".vido");
-            const mainPlayerEl = document.querySelector("#main>.player");
-            if (!options) {
-                options = {
-                    vedo: {
-                        thumb: "default-image/thumbnail.png",
-                        title: "NONE",
-                        vidoUrl: "https://www.youtube.com/embed/",
-                        update: "2009-04-06",
-                        viewcon: "9487",
-                    },
-                    chnel: {
-                        avat: "default-image/avatar.png",
-                        chanUrl: "/",
-                        name: "NONE",
-                    },
-
-                }
-
-            }
-            mainMainvidoEl.querySelector(".thumbnail").style.backgroundImage = `url(${options.vedo.thumb})`
-            document.querySelector("#bg>.bg").style.backgroundImage = `url(${options.vedo.thumb})`
-            document.querySelector("#close-bg>.bg").style.backgroundImage = `url(${options.vedo.thumb})`
-            mainMainvidoEl.querySelector(".title").innerHTML = options.vedo.title
-            mainPlayerEl.querySelector(".box>.title>.title").innerHTML = options.vedo.title
-            mainMainvidoEl.querySelector(".title").setAttribute("href", options.vedo.vidoUrl)
-            mainPlayerEl.querySelector(".box>.vido>.vido").setAttribute("src", "https://www.youtube.com/embed/" + options.vedo.vidoUrl.slice("https://www.youtube.com/watch?v=".length).trim())
-            mainMainvidoEl.querySelector(".uploadDate").innerHTML = options.vedo.update
-            mainMainvidoEl.querySelector(".viewCount").innerHTML = options.vedo.viewcon
-
-            mainMainEl.querySelector(".chanel>.avatar").style.backgroundImage = `url(${options.chnel.avat})`
-            mainMainEl.querySelector(".chanel>.name").setAttribute("href", options.chnel.chanUrl)
-            document.querySelector("#box>.bg-txt ").innerHTML = options.chnel.name
-            mainMainEl.querySelector(".chanel>.name").innerHTML = options.chnel.name
-        }
-
-        async function ytsc() {
-            TheFunctions.ytscing.ing();
-            ipcRenderer.send("main-HiddenIconTip", "查詢中...");
-            const ytKeyWord = document.querySelector("#keyword").value
-            if (ytKeyWord) {
-                try {
-                    const data = await djsmusic.YoutubeUtils.searchFirstVideo(ytKeyWord)
-                    await data.fetch()
-                    await data.channel.fetch()
-                    vido({
-                        vedo: { thumb: data.thumbnailUrl, title: data.title, vidoUrl: data.url, update: data.uploadDate, viewcon: data.viewCount },
-                        chnel: { name: data.channel.name, chanUrl: data.channel.url, avat: data.channel.avatarUrl }
-                    })
-                    ipcRenderer.send("main-HiddenIconTip", `${data.title} / ${data.channel.name}`);
-                } catch (err) {
-                }
-            } else {
-                vido()
-                ipcRenderer.send("main-HiddenIconTip", "Ouo");
-            }
-            TheFunctions.ytscing.done()
-        }
 
         ipcRenderer.on("main-yt-keyword", function (_event, args) {
             document.querySelector("#keyword").value = args
             ipcRenderer.send("main-BrowserWindow", "show");
-            ytsc();
+            TheMainFunctions.ytSc.ytsc();
         })
 
         document.querySelector("#sumit").addEventListener("click", () => {
-            ytsc();
+            TheMainFunctions.ytSc.ytsc();
         })
 
     }
@@ -165,7 +185,7 @@ window.addEventListener("DOMContentLoaded", async () => {
         const ele = document.querySelector("#close-ask>.a")
 
         ipcRenderer.on("main-functions", function (_event, args) {
-            TheFunctions.closeAsk.on()
+            TheAnimectinsFunctions.closeAsk.on()
         })
 
 
@@ -176,21 +196,21 @@ window.addEventListener("DOMContentLoaded", async () => {
             ipcRenderer.send("main-BrowserWindow", "hide");
         })
         document.getElementById("btn-close").addEventListener("click", () => {
-            TheFunctions.closeAsk.on()
+            TheAnimectinsFunctions.closeAsk.on()
         })
 
 
         ele.querySelector(".no").addEventListener("click", () => {
-            TheFunctions.closeAsk.off()
+            TheAnimectinsFunctions.closeAsk.off()
         })
 
         ele.querySelector(".hide").addEventListener("click", () => {
             ipcRenderer.send("main-BrowserWindow", "hide");
-            TheFunctions.closeAsk.off()
+            TheAnimectinsFunctions.closeAsk.off()
         })
 
         ele.querySelector(".yes").addEventListener("click", () => {
-            TheFunctions.closeAsk.off()
+            TheAnimectinsFunctions.closeAsk.off()
             document.body.style.pointerEvents = "none"
             document.querySelector("#box").style.transform = "translate(-50%, -100%) scale(.7)"
             document.querySelector("#box").style.opacity = "0"
@@ -202,17 +222,16 @@ window.addEventListener("DOMContentLoaded", async () => {
     }
 
     {
-        document.addEventListener("keydown", e => {
-            if (!OnOffStatus.ytsring) {
-                if (e.altKey && e.code == "KeyP" && !OnOffStatus.player) {
-                    TheFunctions.player.player()
-                } else if (e.code == "Escape" && OnOffStatus.player) {
-                    TheFunctions.player.player()
-                }
-            }
-        })
+        const keywordEle = document.getElementById("keyword")
+        keywordEle.onfocus = () => {
+            OnOffStatus.keywordfoces = 1
+        }
+        keywordEle.onblur = () => {
+            OnOffStatus.keywordfoces = 0
+        }
+
         document.querySelector("#main>.player>.box>.back").addEventListener("click", () => {
-            TheFunctions.player.player()
+            TheAnimectinsFunctions.player.player()
         })
     }
 

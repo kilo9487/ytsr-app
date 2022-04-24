@@ -83,21 +83,21 @@
         <div class="bg back-image"></div>
         <style>
             #close-bg {
-                top: 0%;
-                left: 50%;
-                width: 100%;
-                height: 100%;
-                position: absolute;
-                transform: translate(-50%, -100%);
-                background: #000;
-                z-index: 1;
-                transition: .6s cubic-bezier(0, .5, 0, 1);
                 opacity: 0;
+                width: 110%;
+                height: 110%;
+                position: absolute;
+                top: -5%;
+                left: -5%;
+                display: flex;
+                align-items: center;
+                background-color: rgb(0 0 0);
             }
 
             #close-bg>.bg {
                 width: 100%;
                 height: 100%;
+                transform: scale(1.1);
                 background-image: url(default-image/thumbnail.png);
                 opacity: .8;
             }
@@ -640,7 +640,7 @@
     </div>
 
     <div id="close-ask">
-        <div class="q bdft-blur">你確定要退出owo</div>
+        <div class="q bdft-blur">你確定要退出QwQ</div>
         <div class="a bdft-blur">
             <div class="no">還是先不要好了</div>
             <div class="hide">我只是單純想隱藏掉這個視窗</div>
@@ -718,7 +718,6 @@
 
     <style>
         #close-bg.close {
-            transform: translate(-50%, -0%);
             opacity: 1;
         }
 

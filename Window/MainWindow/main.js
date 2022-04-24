@@ -268,7 +268,9 @@ window.addEventListener("DOMContentLoaded", async () => {
     {
         // 來源 ： https://codepen.io/spagettiguru/pen/PoqbOKm
 
-        const bg = document.querySelector('#bg');
+        const bg = document.getElementById('bg');
+        const bg2 = document.querySelector('#close-bg>.bg');
+
 
         const viewportWidth = document.documentElement.clientWidth;
         const viewportHeight = document.documentElement.clientHeight;
@@ -286,6 +288,15 @@ window.addEventListener("DOMContentLoaded", async () => {
                 bg.style.transform = `translate(
             ${viewportWidth / 2 + (hDistanceFromCenter / (viewportWidth / 2) * maxXOffset) - bgWidth / 2}px,
             ${viewportHeight / 2 + (vDistanceFromCenter / (viewportHeight / 2) * maxYOffset) - bgHeight / 2}px)`;
+            }
+            {
+                bg2.style.top = "0"
+                bg2.style.left = "0"
+                const maxXOffset = -20;
+                const maxYOffset = -20;
+                bg2.style.transform = `translate(
+            ${viewportWidth / 2 + (hDistanceFromCenter / (viewportWidth / 2) * maxXOffset) - bgWidth / 2}px,
+            ${viewportHeight / 2 + (vDistanceFromCenter / (viewportHeight / 2) * maxYOffset) - bgHeight / 2}px) scale(1.1)`;
             }
         });
     }

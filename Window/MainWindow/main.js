@@ -285,8 +285,8 @@ window.addEventListener("DOMContentLoaded", async () => {
             {
                 bg.style.top = "0"
                 bg.style.left = "0"
-                const maxXOffset = -30;
-                const maxYOffset = -30;
+                const maxXOffset = -10;
+                const maxYOffset = -10;
                 bg.style.transform = `translate(
             ${viewportWidth / 2 + (hDistanceFromCenter / (viewportWidth / 2) * maxXOffset) - bgWidth / 2}px,
             ${viewportHeight / 2 + (vDistanceFromCenter / (viewportHeight / 2) * maxYOffset) - bgHeight / 2}px)`;
